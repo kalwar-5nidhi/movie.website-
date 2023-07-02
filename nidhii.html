@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body
+    style="
+      background-color: black;
+      color: whitesmoke;
+      max-width: 450px;
+      margin: 40px auto;
+    "
+  >
+    <h1 id="movieTitle"></h1>
+    <p id="rating"></p>
+    <form id="search-form">
+      <label for="search-input">Search for a movie:</label>
+      <input type="text" id="search-input" placeholder="Enter movie title" />
+      <button type="submit">Search</button>
+    </form>
+    <script>
+      function displayMovie(title) {
+        const apikey = '718a73ce';
+        const url = `https://www.omdbapi.com/?t=${title}&apikey=${apikey}`;
+        fetch(url)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            const movieTitle = document.getElementById('movieTitle');
+            const rating = document.getElementById('rating');
+            movieTitle.innerHTML = `Title: <b>${data.Title}</b>`;
+            rating.innerHTML = `IMDB Rating: <b>${data.imdbRating}</b><br>Release Year: <b>${data.Year}</b><br>Director Name: <b>${data.Director}</b><br><br><img src="${data.Poster}" style="max-width:160px">`;
+          });
+      }
+
+      const form = document.getElementById('search-form');
+      const searchInput = document.getElementById('search-input');
+
+      // Load default movie on page load
+      window.addEventListener('load', function () {
+        displayMovie('Avatar');
+        searchInput.value = 'Avatar'; // Set default value in search input
+      });
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const searchValue = searchInput.value;
+        displayMovie(searchValue);
+      });
+    </script>
+  </body>
+</html>
+
